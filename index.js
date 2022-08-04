@@ -40,6 +40,13 @@ async function run() {
             isUser ? res.send(user) : res.send({ user: false });
         })
 
+        app.get('/userInfor/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = await userCollection.findOne({ email: email });
+            const isUser = user?.email === email;
+            isUser ? res.send(user) : res.send({ user: false });
+        })
+
 
         /* catagory routes */
         app.get('/catagory_list', async (req, res) => {
