@@ -47,7 +47,7 @@ async function run() {
             // console.log(catagory);
             res.send(catagory);
         })
-        
+
         app.get('/catagory_list/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -59,6 +59,23 @@ async function run() {
             const catagory = req.body;
             // console.log(catagory);
             const result = await catagoryCollection.insertOne(catagory);
+            res.send(result);
+        })
+
+        app.patch('/update_catagory/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateCatagoryInfo = req.body;
+            const filter = { _id: ObjectId(id) };
+            // console.log(updateProductInfo);
+            // res.send({data: true});
+
+            const updateDoc = {
+                $set: {
+                    catagory: updateCatagoryInfo.catagory,
+                    details: updateCatagoryInfo.details
+                }
+            }
+            const result = await catagoryCollection.updateOne(filter, updateDoc);
             res.send(result);
         })
 
