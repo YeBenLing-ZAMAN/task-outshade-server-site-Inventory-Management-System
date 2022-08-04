@@ -62,6 +62,13 @@ async function run() {
             console.log(products);
             res.send(products);
         })
+
+        app.get('/product_list/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const product = await productCollection.findOne(filter);
+            res.send(product);
+        })
         
         app.post('/add_product', async (req, res) => {
             const product = req.body;
