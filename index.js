@@ -23,6 +23,7 @@ async function run() {
         await client.connect();
         const userCollection = client.db("outshade_jobs_tasks").collection("user_info");
         const productCollection = client.db("outshade_jobs_tasks").collection("user_info");
+        const catagoryCollection = client.db("outshade_jobs_tasks").collection("catagory_info");
 
         /* authencation routes */
         app.post('/signin', async (req, res) => {
@@ -30,7 +31,14 @@ async function run() {
             console.log(user);
             const result = await userCollection.insertOne(user);
             res.send(result);
-        })       
+        })
+
+        app.get('/login/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = await userCollection.findOne({ email: email });
+            const isUser = user?.email === email;
+            isUser ? res.send(user) : res.send({ user: false });
+        })
 
     } finally {
         // Ensures that the client will close when you finish/error
@@ -41,9 +49,9 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-  res.send('server is found!')
+    res.send('server is found!')
 })
 
 app.listen(port, () => {
-  console.log(`Ppp listening on port ${port}`)
+    console.log(`Ppp listening on port ${port}`)
 })
