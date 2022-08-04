@@ -44,7 +44,7 @@ async function run() {
         /* catagory routes */
         app.get('/catagory_list', async (req, res) => {
             const catagory = await catagoryCollection.find().toArray();
-            console.log(catagory);
+            // console.log(catagory);
             res.send(catagory);
         })
 
@@ -59,7 +59,7 @@ async function run() {
         /* product routes */
         app.get('/product_list', async (req, res) => {
             const products = await productCollection.find().toArray();
-            console.log(products);
+            // console.log(products);
             res.send(products);
         })
 
@@ -74,6 +74,25 @@ async function run() {
             const product = req.body;
             // console.log(product);
             const result = await productCollection.insertOne(product);
+            res.send(result);
+        })
+
+        app.patch('/update_product/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateProductInfo = req.body;
+            const filter = { _id: ObjectId(id) };
+            // console.log(updateProductInfo);
+            // res.send({data: true});
+
+            const updateDoc = {
+                $set: {
+                    name: updateProductInfo.name,
+                    quantity: updateProductInfo.quantity,
+                    price: parseInt(updateProductInfo.price),
+                    catagory: updateProductInfo.catagory
+                }
+            }
+            const result = await productCollection.updateOne(filter, updateDoc);
             res.send(result);
         })
 
