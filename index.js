@@ -56,6 +56,7 @@ async function run() {
         })
 
 
+
         /* product routes */
         app.get('/product_list', async (req, res) => {
             const products = await productCollection.find().toArray();
@@ -93,6 +94,14 @@ async function run() {
                 }
             }
             const result = await productCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        })
+
+        app.delete('/delete_product/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            // console.log(filter);
+            const result = await productCollection.deleteOne(filter);
             res.send(result);
         })
 
