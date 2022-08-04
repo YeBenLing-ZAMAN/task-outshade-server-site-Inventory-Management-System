@@ -40,6 +40,16 @@ async function run() {
             isUser ? res.send(user) : res.send({ user: false });
         })
 
+
+        /* catagory routes */
+        app.post('/add_catagory', async (req, res) => {
+            const catagory = req.body;
+            // console.log(catagory);
+            const result = await catagoryCollection.insertOne(catagory);
+            res.send(result);
+        })
+
+
     } finally {
         // Ensures that the client will close when you finish/error
         //   await client.close();
