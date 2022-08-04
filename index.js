@@ -55,6 +55,16 @@ async function run() {
             res.send(result);
         })
 
+        app.delete('/delete_catagory/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const catagory = await catagoryCollection.findOne(filter);
+            const query = { catagory: catagory.catagory }
+            const productDelete = await productCollection.deleteMany(query);
+            const result = await catagoryCollection.deleteOne(filter);
+            res.send(result);
+        })
+
 
 
         /* product routes */
@@ -70,7 +80,7 @@ async function run() {
             const product = await productCollection.findOne(filter);
             res.send(product);
         })
-        
+
         app.post('/add_product', async (req, res) => {
             const product = req.body;
             // console.log(product);
