@@ -47,6 +47,13 @@ async function run() {
             // console.log(catagory);
             res.send(catagory);
         })
+        
+        app.get('/catagory_list/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const catagory = await catagoryCollection.findOne(filter);
+            res.send(catagory);
+        })
 
         app.post('/add_catagory', async (req, res) => {
             const catagory = req.body;
