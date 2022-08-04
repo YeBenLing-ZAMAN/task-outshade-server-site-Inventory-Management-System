@@ -22,8 +22,8 @@ async function run() {
     try {
         await client.connect();
         const userCollection = client.db("outshade_jobs_tasks").collection("user_info");
-        const productCollection = client.db("outshade_jobs_tasks").collection("user_info");
         const catagoryCollection = client.db("outshade_jobs_tasks").collection("catagory_info");
+        const productCollection = client.db("outshade_jobs_tasks").collection("product_info");
 
         /* authencation routes */
         app.post('/signin', async (req, res) => {
@@ -42,10 +42,31 @@ async function run() {
 
 
         /* catagory routes */
+        app.get('/catagory_list', async (req, res) => {
+            const catagory = await catagoryCollection.find().toArray();
+            console.log(catagory);
+            res.send(catagory);
+        })
+
         app.post('/add_catagory', async (req, res) => {
             const catagory = req.body;
             // console.log(catagory);
             const result = await catagoryCollection.insertOne(catagory);
+            res.send(result);
+        })
+
+
+        /* product routes */
+        app.get('/product_list', async (req, res) => {
+            const products = await productCollection.find().toArray();
+            console.log(products);
+            res.send(products);
+        })
+        
+        app.post('/add_product', async (req, res) => {
+            const product = req.body;
+            // console.log(product);
+            const result = await productCollection.insertOne(product);
             res.send(result);
         })
 
